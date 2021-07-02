@@ -18,6 +18,9 @@
           destroy-method="close">
         <constructor-arg ref="hikariConfig" />
     </bean>
-
+    <!--Sql Session-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
     <context:component-scan base-package="com.devjin.muv.sample"></context:component-scan>
 </beans>
