@@ -23,6 +23,11 @@
         <property name="password" value="book_ex"></property>
     </bean>
 
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
     <!--HikariCP configuration-->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
           destroy-method="close">
@@ -34,4 +39,5 @@
     </bean>
     <mybatis-spring:scan base-package="com.devjin.muv.mapper"/>
     <context:component-scan base-package="com.devjin.muv.sample"></context:component-scan>
+    <context:component-scan base-package="com.devjin.muv.controller"></context:component-scan>
 </beans>
