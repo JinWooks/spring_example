@@ -37,7 +37,18 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
     </bean>
+
+
+    <!--FileUpload-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="104857560"></property>
+        <property name="maxUploadSizePerFile" value="2097152"></property>
+        <property name="uploadTempDir" value="file:/C:/upload/tmp"></property>
+    </bean>
+
     <mybatis-spring:scan base-package="com.devjin.muv.mapper"/>
     <context:component-scan base-package="com.devjin.muv.sample"></context:component-scan>
     <context:component-scan base-package="com.devjin.muv.controller"></context:component-scan>
+    <context:component-scan base-package="com.devjin.muv.exception"></context:component-scan>
 </beans>

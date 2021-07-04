@@ -6,15 +6,20 @@ import com.devjin.muv.domain.TodoDTO;
 import lombok.extern.log4j.Log4j;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 
 @Controller
 @RequestMapping("/sample/*")
@@ -108,12 +113,41 @@ public class SampleController {
 
     /* Json 데이터를 만들어내서 처리하는 방식*/
     @GetMapping("/ex06")
-    public @ResponseBody SampleDTO ex06() {
+    @ResponseBody
+    public SampleDTO ex06() {
         log.info("/ex06......");
         SampleDTO dto = new SampleDTO();
         dto.setAge(28);
         dto.setName("아몰랑");
 
         return dto;
+    }
+
+    /* ResponseEntity 타입 */
+    @GetMapping("/ex07")
+    public ResponseEntity<String> ex07() {
+        log.info("/ex07...........");
+
+        String msg = "{\"name\": \"홍길동\"}";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type","application/json;charset=UTF-8");
+
+        return new ResponseEntity<>(msg,headers, HttpStatus.OK);
+    }
+
+    /* 파일 업로드 처리 */
+    @GetMapping("/exUpload")
+    public void exUpload() {
+        log.info("/exUpload......");
+
+    }
+    @PostMapping("/exUploadPost")
+    public void exUploadPost(LinkedList<MultipartFile> files) {
+        files.forEach(file -> {
+            log.info("--------------------------------");
+            log.info("name: "+file.getOriginalFilename());
+            log.info("size: "+file.getSize());
+        });
     }
 }
