@@ -91,12 +91,29 @@ public class SampleController {
         return "home";
     }
 
-    /* Model로 데이터 전달하기 실전 */
+    /* Model로 데이터 전달하기 */
     @GetMapping("/ex04")
     public String ex04(SampleDTO dto,@ModelAttribute("page") int page) {
         log.info("dto: "+dto);
         log.info("page: "+page);
 
         return "/sample/ex04";
+    }
+
+    /* void 타입*/
+    @GetMapping("/ex05")
+    public void ex05() {
+        log.info("/ex05........");
+    }
+
+    /* Json 데이터를 만들어내서 처리하는 방식*/
+    @GetMapping("/ex06")
+    public @ResponseBody SampleDTO ex06() {
+        log.info("/ex06......");
+        SampleDTO dto = new SampleDTO();
+        dto.setAge(28);
+        dto.setName("아몰랑");
+
+        return dto;
     }
 }
