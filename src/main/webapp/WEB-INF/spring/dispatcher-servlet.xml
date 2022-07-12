@@ -17,25 +17,41 @@
         <property name="driverClassName"
                   value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
         <property name="jdbcUrl"
-                  value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"></property>
+                  value="jdbc:log4jdbc:mysql://localhost:3306/testdb?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;allowPublicKeyRetrieval=true"></property>
 
-        <property name="username" value="book_ex_2"></property>
-        <property name="password" value="book_ex"></property>
+        <property name="username" value="test_member"></property>
+        <property name="password" value="1234"></property>
     </bean>
+
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".jsp" />
     </bean>
 
+    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceSpied" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="[   SQL   ]  :  "/>
+            </bean>
+        </property>
+    </bean>
+
     <!--HikariCP configuration-->
-    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+    <bean id="dataSourceSpied" class="com.zaxxer.hikari.HikariDataSource"
           destroy-method="close">
         <constructor-arg ref="hikariConfig" />
     </bean>
     <!--Sql Session-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath*:/mapper/**/*_sql.xml" />
+    </bean>
+
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
 
 
@@ -47,7 +63,8 @@
         <property name="uploadTempDir" value="file:/C:/upload/tmp"></property>
     </bean>
 
-    <mybatis-spring:scan base-package="com.devjin.muv.mapper"/>
+
+
     <context:component-scan base-package="com.devjin.muv.sample"></context:component-scan>
     <context:component-scan base-package="com.devjin.muv.controller"></context:component-scan>
     <context:component-scan base-package="com.devjin.muv.exception"></context:component-scan>
